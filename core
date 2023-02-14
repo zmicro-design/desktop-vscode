@@ -1,0 +1,75 @@
+#!/bin/bash
+
+install() {
+  # prepare vars
+  local name="$DESKTOP_CORE_NAME"
+
+  log::info "[$(timestamp)][desktop][$name] preparing ..."
+
+  # get system os/arch
+  local os="$DESKTOP_OS"
+  local arch="$DESKTOP_OS_ARCH"
+  local kernel="$DESKTOP_OS_KERNEL"
+  local platform="$DESKTOP_OS_PLATFORM"
+  # usr_bin_dir
+  local usr_bin_dir="$DESKTOP_USER_BIN_DIR"
+  local cache_dir="$DESKTOP_CACHE_DIR"
+  local tmp_dir="$DESKTOP_TMP_DIR"
+
+  #
+  case $platform in
+  darwin) ;;
+  *)
+    log::error "[$(timestamp)] unsupport platform: $platform"
+    return 1
+    ;;
+  esac
+
+  # case $arch in
+  # arm64) ;;
+
+  # amd64)
+  #   arch="x86_64"
+  #   ;;
+  # *)
+  #   log::error "[$(timestamp)] unsupport arch: $arch"
+  #   return 1
+  #   ;;
+  # esac
+  # #
+
+  # files
+  local cache_file="$cache_dir/$DESKTOP_CORE_VERSION.zip"
+  # local source_bin_file="./$name"
+
+  # prepare context
+  log::info "[$(timestamp)][desktop][$name] context: $tmp_dir ..."
+  cd $tmp_dir
+
+  if [ -f "$cache_file" ]; then
+    log::info "[$(timestamp)][desktop][$name] found cache at $cache_file ..."
+  else
+    # reference: https://github.com/microsoft/iterm2/releases
+    # example:
+    #   https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/VSCode-darwin-universal.zip
+    #   https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/code_1.75.1-1675893397_amd64.deb
+    # generate url
+    local url="https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/VSCode-darwin-universal.zip"
+    log::debug "[$(timestamp)][desktop][$name][$kernel][$arch] url: $url, file: ${cache_file}, tmp_dir: $tmp_dir"
+
+    # download
+    log::info "[$(timestamp)][desktop][$name] downloading from $url ..."
+    os::download $cache_file $url
+  fi
+
+  # install
+  log::info "[$(timestamp)][desktop][$name] installing $cache_file ..."
+  # os::install $source_bin_file $usr_bin_dir $name
+  install::zip $cache_file VSCode "Visual\ Studio\ Code.app"
+
+  # clean
+  log::info "[$(timestamp)][desktop][$name] cleaning ..."
+  rm -rf $tmp_dir
+}
+
+export -f install

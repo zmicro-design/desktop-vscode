@@ -1,0 +1,45 @@
+#!/bin/bash
+
+export DESKTOP_NAME="vscode"
+import "$ZMICRO_DESKTOPS_PATH/$DESKTOP_NAME/config"
+import "$ZMICRO_DESKTOPS_PATH/$DESKTOP_NAME/core"
+
+help() {
+  echo "Usage:"
+  echo "  zmicro vscode <args ...>"
+  echo ""
+
+  vscode --help
+}
+
+version() {
+  vscode --version
+}
+
+core() {
+  # context directory
+  local context="$ZMICRO_DESKTOPS_DATA_PATH/vscode"
+  if [ ! -d "$context" ]; then
+    mkdir -p $context
+  fi
+  cd $context
+  # context directory
+
+  case $1 in
+  -h | --help | help)
+    help
+    ;;
+  -v | --version | version)
+    version
+    ;;
+  *)
+    vscode "$@"
+    ;;
+  esac
+}
+
+run() {
+  core "$@"
+}
+
+run "$@"
