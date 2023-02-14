@@ -46,7 +46,7 @@ install() {
   log::info "[$(timestamp)][desktop][$name] context: $tmp_dir ..."
   cd $tmp_dir
 
-  if [ -f "$cache_file" ]; then
+  if [ -f "$cache_file" ] && [ "$(os::md5 $cache_file)" = "$DESKTOP_CORE_MD5SUM" ]; then
     log::info "[$(timestamp)][desktop][$name] found cache at $cache_file ..."
   else
     # reference: https://github.com/microsoft/iterm2/releases
@@ -65,7 +65,7 @@ install() {
   # install
   log::info "[$(timestamp)][desktop][$name] installing $cache_file ..."
   # os::install $source_bin_file $usr_bin_dir $name
-  install::zip $cache_file VSCode "Visual\ Studio\ Code.app"
+  install::zip $cache_file VSCode "Visual Studio Code.app"
 
   # clean
   log::info "[$(timestamp)][desktop][$name] cleaning ..."
