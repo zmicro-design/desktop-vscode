@@ -38,6 +38,16 @@ install() {
   # esac
   # #
 
+  # # get latest version
+  # log::info "[$(timestamp)][desktop][$name] checking latest version ..."
+  # local latest_version=$(git::get_remote_latest_tag $DESKTOP_CORE_GIT_REPOSITORY)
+  # if [ "$?" != "0" ]; then
+  #   log::error "[$(timestamp)][desktop][$name] failed to get latest version ."
+  #   return 1
+  # fi
+  # DESKTOP_CORE_VERSION=$latest_version
+  # log::success "[$(timestamp)][desktop][$name] latest version: $DESKTOP_CORE_VERSION"
+
   # files
   local cache_file="$cache_dir/$DESKTOP_CORE_VERSION.zip"
   # local source_bin_file="./$name"
@@ -55,6 +65,14 @@ install() {
     #   https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/code_1.75.1-1675893397_amd64.deb
     # generate url
     local url="https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/VSCode-darwin-universal.zip"
+    case $DESKTOP_CORE_VERSION in
+      v1.75.1)
+        url="https://az764295.vo.msecnd.net/stable/441438abd1ac652551dbe4d408dfcec8a499b8bf/VSCode-darwin-universal.zip"
+        ;;
+      v1.81.1)
+        url="https://az764295.vo.msecnd.net/stable/6c3e3dba23e8fadc360aed75ce363ba185c49794/VSCode-darwin-universal.zip"
+        ;;
+    esac
     log::debug "[$(timestamp)][desktop][$name][$kernel][$arch] url: $url, file: ${cache_file}, tmp_dir: $tmp_dir"
 
     # download

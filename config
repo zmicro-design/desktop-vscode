@@ -6,4 +6,6 @@ export DESKTOP_CORE_VERSION=v1.75.1
 export DESKTOP_CORE_MD5SUM=5eeac1c71caff672e99d3f4180f09233
 export DESKTOP_CORE_ORG="microsoft"
 
-export DESKTOP_CORE_RELEASE_DOWNLOAD="https://github.com/${DESKTOP_CORE_ORG}/vscode/releases/download"
+export DESKTOP_CORE_GIT_REPOSITORY="https://github.com/${DESKTOP_CORE_ORG}/${DESKTOP_CORE_NAME}"
+
+export DESKTOP_CORE_RELEASE_DOWNLOAD="${DESKTOP_CORE_GIT_REPOSITORY}/releases/download"
